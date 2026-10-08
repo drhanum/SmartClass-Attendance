@@ -1,97 +1,20 @@
 {
   "users": [
-    {
-      "username": "dosen1",
-      "password": "123",
-      "role": "dosen",
-      "nama": "Pak Budi"
-    },
-    {
-      "username": "dosen2",
-      "password": "123",
-      "role": "dosen",
-      "nama": "Bu Sari"
-    },
-    {
-      "username": "mhs1",
-      "password": "123",
-      "role": "mahasiswa",
-      "nama": "Budi Junior",
-      "nim": "123450"
-    },
-    {
-      "username": "mhs2",
-      "password": "123",
-      "role": "mahasiswa",
-      "nama": "Citra Lestari",
-      "nim": "123460"
-    },
-    {
-      "username": "mhs3",
-      "password": "123",
-      "role": "mahasiswa",
-      "nama": "Andi Wijaya",
-      "nim": "123440"
-    },
-    {
-      "username": "mhs4",
-      "password": "123",
-      "role": "mahasiswa",
-      "nama": "Dewi Anggraini",
-      "nim": "123470"
-    }
+    {"username": "dosen1", "password": "123", "role": "dosen", "nama": "Simon Barus", "nidn": "D0010001"},
+    {"username": "dosen2", "password": "123", "role": "dosen", "nama": "Ary Budi", "nidn": "D0020002"},
+    {"username": "mhs1", "password": "123", "role": "mahasiswa", "nama": "Hanum", "nim": "20255520001"},
+    {"username": "mhs2", "password": "123", "role": "mahasiswa", "nama": "Naomi", "nim": "20255520002"},
+    {"username": "mhs3", "password": "123", "role": "mahasiswa", "nama": "Christian", "nim": "20255520003"},
+    {"username": "mhs4", "password": "123", "role": "mahasiswa", "nama": "Theo", "nim": "20255520004"}
   ],
   "matkul": [
-    {
-      "kode": "IF101",
-      "nama": "Struktur Data",
-      "dosen": "dosen1"
-    },
-    {
-      "kode": "IF102",
-      "nama": "Basis Data",
-      "dosen": "dosen1"
-    },
-    {
-      "kode": "IF201",
-      "nama": "Jaringan Komputer",
-      "dosen": "dosen2"
-    }
+    {"kode": "IF101", "nama": "Struktur Data", "dosen": "D0010001"},
+    {"kode": "IF102", "nama": "Basis Data", "dosen": "D0010001"},
+    {"kode": "IF201", "nama": "Jaringan Komputer", "dosen": "D0020002"}
   ],
   "presensi": {
-    "IF101": {
-      "123450": [
-        "H"
-      ],
-      "123460": [
-        "H"
-      ],
-      "123440": [
-        "H"
-      ],
-      "123470": [
-        "I"
-      ]
-    },
-    "IF102": {
-      "123450": [
-        "H"
-      ],
-      "123460": [
-        "H"
-      ],
-      "123440": [
-        "I"
-      ],
-      "123470": [
-        "A"
-      ]
-    },
-    "IF201": {
-      "123450": [],
-      "123460": [],
-      "123440": [],
-      "123470": []
-    }
+    "IF101": {"20255520001": [], "20255520002": [], "20255520003": [], "20255520004": []},
+    "IF102": {"20255520001": [], "20255520002": [], "20255520003": [], "20255520004": []},
+    "IF201": {"20255520001": [], "20255520002": [], "20255520003": [], "20255520004": []}
   }
 }
