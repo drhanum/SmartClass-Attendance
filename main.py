@@ -6,7 +6,7 @@ NAMA_FILE = "data.json"
 
 # 1. PENGELOLA DATA (membaca & menyimpan data.json)
 def baca_data():
-    # Membaca isi data.json lalu mengembalikannya sebagai dictionary.
+    # Membaca data.json dan mengembalikannya sebagai dictionary
     file = open(NAMA_FILE, "r")
     data = json.load(file)
     file.close()
@@ -14,36 +14,14 @@ def baca_data():
 
 
 def simpan_data(data):
-    # Menyimpan dictionary data ke data.json.
+    # Menyimpan dictionary data ke data.json
     file = open(NAMA_FILE, "w")
     json.dump(data, file, indent=2)
     file.close()
 
-# 2. SEARCHING
-def linear_search_user(users, username):
-    # LINEAR SEARCH: cek satu per satu dari awal sampai akhir list.
-    # Mengembalikan index user, atau -1 jika tidak ketemu.
 
-    # Time Complexity:
-    #     Best Case    : O(1)  -> username ada di urutan pertama
-    #     Worst Case   : O(n)  -> username di urutan terakhir / tidak ada
-    #     Average Case : O(n)  -> rata-rata cek setengah dari data
-    for i in range(len(users)):
-        if users[i]["username"] == username:
-            return i
-    return -1
-
-
+# 2. SEARCHING (Binary Search)
 def binary_search(daftar, target):
-    # BINARY SEARCH: list HARUS sudah terurut (ascending).
-    # Cek elemen tengah, lalu buang separuh bagian yang tidak mungkin.
-    # Setiap elemen berbentuk [nim, nama], yang dibandingkan adalah nim (indeks 0).
-    # Mengembalikan index, atau -1 jika tidak ketemu.
-
-    # Time Complexity:
-    #     Best Case    : O(1)      -> target tepat di tengah
-    #     Worst Case   : O(log n)  -> data dibagi dua terus-menerus
-    #     Average Case : O(log n)
     kiri = 0
     kanan = len(daftar) - 1
     while kiri <= kanan:
@@ -56,73 +34,35 @@ def binary_search(daftar, target):
             kanan = tengah - 1
     return -1
 
-# 3. SORTING (Merge Sort manual)
-def gabung(kiri, kanan, turun):
-    # Menggabungkan dua list yang sudah terurut menjadi satu list terurut.
-    hasil = []
-    i = 0
-    j = 0
-    while i < len(kiri) and j < len(kanan):
-        if turun == True:
-            kiri_dulu = kiri[i][0] >= kanan[j][0]
-        else:
-            kiri_dulu = kiri[i][0] <= kanan[j][0]
 
-        if kiri_dulu == True:
-            hasil.append(kiri[i])
-            i = i + 1
-        else:
-            hasil.append(kanan[j])
-            j = j + 1
+# 3. SORTING (Selection Sort manual)
+def selection_sort(arr, turun):
+    n = len(arr)
+    for i in range(n - 1):
+        pilih = i
+        for j in range(i + 1, n):
+            if turun == True:
+                if arr[j][0] > arr[pilih][0]:
+                    pilih = j
+            else:
+                if arr[j][0] < arr[pilih][0]:
+                    pilih = j
+        # tukar posisi i dengan elemen terpilih
+        sementara = arr[i]
+        arr[i] = arr[pilih]
+        arr[pilih] = sementara
+    return arr
 
-    # masukkan sisa elemen yang belum terambil
-    while i < len(kiri):
-        hasil.append(kiri[i])
-        i = i + 1
-    while j < len(kanan):
-        hasil.append(kanan[j])
-        j = j + 1
-    return hasil
-
-
-def merge_sort(arr, turun):
-    # MERGE SORT: bagi list jadi dua, urutkan tiap bagian, lalu gabungkan.
-    # Yang diurutkan adalah elemen indeks 0 dari setiap data.
-    # turun=True  -> besar ke kecil
-    # turun=False -> kecil ke besar
-    # (Tidak memakai list.sort())
-
-    # Time Complexity:
-    #     Best Case    : O(n log n)
-    #     Worst Case   : O(n log n)
-    #     Average Case : O(n log n)
-    if len(arr) <= 1:
-        return arr
-    tengah = len(arr) // 2
-    kiri = merge_sort(arr[:tengah], turun)
-    kanan = merge_sort(arr[tengah:], turun)
-    return gabung(kiri, kanan, turun)
 
 # 4. REKURSI (tanpa for / while)
 def hitung_rekursif(matriks, baris, kolom):
-    # Menghitung total [Hadir, Sakit, Izin, Alpha] dari array 2D (matriks)
-    # memakai rekursi murni. Panggil dengan: hitung_rekursif(matriks, 0, 0)
-
-    # Cara kerja:
-    #     - Jika semua baris sudah selesai -> kembalikan [0, 0, 0, 0]
-    #     - Jika kolom sudah habis         -> lanjut ke baris berikutnya
-    #     - Selain itu: hitung sisa sel di sebelah kanan, lalu tambah sel ini
-
-    # Time Complexity (N = jumlah seluruh sel pada matriks):
-    #     Best Case    : O(1)  -> matriks kosong
-    #     Worst Case   : O(N)  -> semua sel dikunjungi sekali
-    #     Average Case : O(N)
-    if baris == len(matriks):
+    # Menghitung total [Hadir, Sakit, Izin, Alpha] dari array 2D
+    if baris == len(matriks):                  # base case 1: semua baris selesai
         return [0, 0, 0, 0]
-    if kolom == len(matriks[baris]):
+    if kolom == len(matriks[baris]):           # base case 2: kolom habis -> baris berikutnya
         return hitung_rekursif(matriks, baris + 1, 0)
 
-    hasil = hitung_rekursif(matriks, baris, kolom + 1)
+    hasil = hitung_rekursif(matriks, baris, kolom + 1)   # hitung sisa sel di kanan
     status = matriks[baris][kolom]
     if status == "H":
         hasil[0] = hasil[0] + 1
@@ -132,6 +72,22 @@ def hitung_rekursif(matriks, baris, kolom):
         hasil[2] = hasil[2] + 1
     elif status == "A":
         hasil[3] = hasil[3] + 1
+    return hasil
+
+
+def hitung_iteratif(matriks):
+    # Versi LOOP dari hitung_rekursif (pembanding), hasil sama
+    hasil = [0, 0, 0, 0]
+    for baris in matriks:
+        for status in baris:
+            if status == "H":
+                hasil[0] = hasil[0] + 1
+            elif status == "S":
+                hasil[1] = hasil[1] + 1
+            elif status == "I":
+                hasil[2] = hasil[2] + 1
+            elif status == "A":
+                hasil[3] = hasil[3] + 1
     return hasil
 
 
@@ -145,25 +101,24 @@ def hitung_persen(hasil):
 
 
 def cari_nama(users, nim):
-    # Mencari nama mahasiswa dari NIM.
+    # Mencari nama mahasiswa dari NIM
     for user in users:
         if user["role"] == "mahasiswa" and user["nim"] == nim:
             return user["nama"]
     return "-"
 
 
-def matkul_dosen(data, username):
-    # Mengambil daftar matkul milik seorang dosen. 
+def matkul_dosen(data, nidn):
+    # Mengambil daftar matkul milik seorang dosen (dicari lewat NIDN)
     hasil = []
     for m in data["matkul"]:
-        if m["dosen"] == username:
+        if m["dosen"] == nidn:
             hasil.append(m)
     return hasil
 
-
 # 6. MENU MAHASISWA
 def view_presensi(data, user):
-    # Menampilkan rekap presensi mahasiswa untuk setiap matkul.
+    # Menampilkan rekap presensi mahasiswa untuk setiap matkul
     print("\nNama :", user["nama"])
     print("NIM  :", user["nim"])
     print("-" * 85)
@@ -188,7 +143,7 @@ def view_presensi(data, user):
 
 
 def menu_mahasiswa(data, user):
-    # Menu untuk mahasiswa.
+    # Menu untuk mahasiswa
     while True:
         print("\n=== MENU MAHASISWA ===")
         print("1. View Presensi")
@@ -204,17 +159,17 @@ def menu_mahasiswa(data, user):
 
 # 7. MENU DOSEN
 def view_lap_kehadiran(data, user):
-    # Laporan kehadiran per matkul, diurutkan dari persentase tertinggi.
-    for m in matkul_dosen(data, user["username"]):
+    # Laporan kehadiran per matkul, diurutkan dari persentase tertinggi
+    for m in matkul_dosen(data, user["nidn"]):
         rekap = []
         for nim in data["presensi"][m["kode"]]:
             riwayat = data["presensi"][m["kode"]][nim]
             hasil = hitung_rekursif([riwayat], 0, 0)
             persen = hitung_persen(hasil)
-            # persen ditaruh di indeks 0 karena merge_sort mengurutkan indeks 0
+            # persen ditaruh di indeks 0 karena selection_sort mengurutkan indeks 0
             rekap.append([persen, cari_nama(data["users"], nim), nim])
 
-        rekap = merge_sort(rekap, True)
+        rekap = selection_sort(rekap, True)
 
         print("\n=== " + m["kode"] + " - " + m["nama"] + " ===")
         print("Nama".ljust(20), "NIM".ljust(10), "Persentase")
@@ -223,7 +178,7 @@ def view_lap_kehadiran(data, user):
 
 
 def minta_status(nama):
-    # Meminta input H/S/I/A. Mengembalikan 'X' jika dosen batal.
+    # Meminta input H/S/I/A. Mengembalikan 'X' jika dosen batal
     while True:
         status = input("Status " + nama + " (H/S/I/A, x=batal): ").upper()
         if status in ["H", "S", "I", "A", "X"]:
@@ -232,14 +187,14 @@ def minta_status(nama):
 
 
 def proses_matkul(data, matkul):
-    # Input presensi untuk satu matkul.
+    # Input presensi untuk satu matkul
     riwayat = data["presensi"][matkul["kode"]]
 
     # Buat list [nim, nama] lalu urutkan berdasarkan NIM (syarat binary search)
     daftar = []
     for nim in riwayat:
         daftar.append([nim, cari_nama(data["users"], nim)])
-    daftar = merge_sort(daftar, False)
+    daftar = selection_sort(daftar, False)
 
     jumlah = len(riwayat[daftar[0][0]])
     print("\nPertemuan tercatat:", jumlah)
@@ -287,9 +242,9 @@ def proses_matkul(data, matkul):
 
 
 def input_presensi(data, user):
-    # Menampilkan pilihan matkul milik dosen.
+    # Menampilkan pilihan matkul milik dosen
     while True:
-        daftar = matkul_dosen(data, user["username"])
+        daftar = matkul_dosen(data, user["nidn"])
         print("\n=== PILIH MATAKULIAH ===")
         for i in range(len(daftar)):
             print(str(i + 1) + ". " + daftar[i]["nama"])
@@ -305,9 +260,11 @@ def input_presensi(data, user):
 
 
 def menu_dosen(data, user):
-    # Menu untuk dosen.
+    # Menu untuk dosen
     while True:
         print("\n=== MENU DOSEN ===")
+        print("Nama :", user["nama"])
+        print("NIDN :", user["nidn"])
         print("1. View Lap Kehadiran")
         print("2. Input Presensi")
         print("3. Log Out")
@@ -324,8 +281,12 @@ def menu_dosen(data, user):
 
 # 8. LOGIN & MAIN
 def login(data):
-    # Meminta username & password. Jika salah tampil 'salah' lalu ulangi.
-    # Ketik x di username untuk batal (mengembalikan dictionary kosong).
+    # Meminta username & password. Jika salah tampil 'salah' lalu ulangi
+    daftar = []
+    for i in range(len(data["users"])):
+        daftar.append([data["users"][i]["username"], i])   # [username, index asli]
+    daftar = selection_sort(daftar, False)
+
     while True:
         print("\n=== LOGIN ===")
         username = input("Username (x = batal): ")
@@ -333,14 +294,16 @@ def login(data):
             return {}
         password = input("Password: ")
 
-        idx = linear_search_user(data["users"], username)
-        if idx != -1 and data["users"][idx]["password"] == password:
-            return data["users"][idx]
+        posisi = binary_search(daftar, username)
+        if posisi != -1:
+            user = data["users"][daftar[posisi][1]]
+            if user["password"] == password:
+                return user
         print("salah")
 
 
 def main():
-    # Fungsi utama: mengatur Main Menu.
+    # Fungsi utama: mengatur Main Menu
     data = baca_data()
 
     while True:
