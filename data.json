@@ -1,0 +1,97 @@
+{
+  "users": [
+    {
+      "username": "dosen1",
+      "password": "123",
+      "role": "dosen",
+      "nama": "Pak Budi"
+    },
+    {
+      "username": "dosen2",
+      "password": "123",
+      "role": "dosen",
+      "nama": "Bu Sari"
+    },
+    {
+      "username": "mhs1",
+      "password": "123",
+      "role": "mahasiswa",
+      "nama": "Budi Junior",
+      "nim": "123450"
+    },
+    {
+      "username": "mhs2",
+      "password": "123",
+      "role": "mahasiswa",
+      "nama": "Citra Lestari",
+      "nim": "123460"
+    },
+    {
+      "username": "mhs3",
+      "password": "123",
+      "role": "mahasiswa",
+      "nama": "Andi Wijaya",
+      "nim": "123440"
+    },
+    {
+      "username": "mhs4",
+      "password": "123",
+      "role": "mahasiswa",
+      "nama": "Dewi Anggraini",
+      "nim": "123470"
+    }
+  ],
+  "matkul": [
+    {
+      "kode": "IF101",
+      "nama": "Struktur Data",
+      "dosen": "dosen1"
+    },
+    {
+      "kode": "IF102",
+      "nama": "Basis Data",
+      "dosen": "dosen1"
+    },
+    {
+      "kode": "IF201",
+      "nama": "Jaringan Komputer",
+      "dosen": "dosen2"
+    }
+  ],
+  "presensi": {
+    "IF101": {
+      "123450": [
+        "H"
+      ],
+      "123460": [
+        "H"
+      ],
+      "123440": [
+        "H"
+      ],
+      "123470": [
+        "I"
+      ]
+    },
+    "IF102": {
+      "123450": [
+        "H"
+      ],
+      "123460": [
+        "H"
+      ],
+      "123440": [
+        "I"
+      ],
+      "123470": [
+        "A"
+      ]
+    },
+    "IF201": {
+      "123450": [],
+      "123460": [],
+      "123440": [],
+      "123470": []
+    }
+  }
+}
