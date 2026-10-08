@@ -1,11 +1,11 @@
 {
   "users": [
-    {"username": "dosen1", "password": "123", "role": "dosen", "nama": "Simon Barus", "nidn": "D0010001"},
-    {"username": "dosen2", "password": "123", "role": "dosen", "nama": "Ary Budi", "nidn": "D0020002"},
-    {"username": "mhs1", "password": "123", "role": "mahasiswa", "nama": "Hanum", "nim": "20255520001"},
-    {"username": "mhs2", "password": "123", "role": "mahasiswa", "nama": "Naomi", "nim": "20255520002"},
-    {"username": "mhs3", "password": "123", "role": "mahasiswa", "nama": "Christian", "nim": "20255520003"},
-    {"username": "mhs4", "password": "123", "role": "mahasiswa", "nama": "Theo", "nim": "20255520004"}
+    {"username": "D00100001", "password": "Simon001", "role": "dosen", "nama": "Simon Barus", "nidn": "D0010001"},
+    {"username": "D00200002", "password": "Ary002", "role": "dosen", "nama": "Ary Budi", "nidn": "D0020002"},
+    {"username": "20255520001", "password": "Hanum001", "role": "mahasiswa", "nama": "Hanum", "nim": "20255520001"},
+    {"username": "20255520002", "password": "Naomi002", "role": "mahasiswa", "nama": "Naomi", "nim": "20255520002"},
+    {"username": "20255520003", "password": "Christian003", "role": "mahasiswa", "nama": "Christian", "nim": "20255520003"},
+    {"username": "20255520004", "password": "Dimas004", "role": "mahasiswa", "nama": "Dimas", "nim": "20255520004"}
   ],
   "matkul": [
     {"kode": "IF101", "nama": "Struktur Data", "dosen": "D0010001"},
