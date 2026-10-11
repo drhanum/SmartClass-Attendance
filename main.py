@@ -3,6 +3,7 @@
 import json
 
 NAMA_FILE = "data.json"
+MAKS_PERTEMUAN = 16   # jumlah pertemuan maksimal per matkul (pembagi persentase)
 
 # 1. PENGELOLA DATA (membaca & menyimpan data.json)
 def baca_data():
@@ -93,11 +94,8 @@ def hitung_iteratif(matriks):
 
 # 5. FUNGSI BANTU
 def hitung_persen(hasil):
-    # Persentase hadir = jumlah hadir / total pertemuan x 100
-    total = hasil[0] + hasil[1] + hasil[2] + hasil[3]
-    if total == 0:
-        return 0.0
-    return hasil[0] / total * 100
+    # Persentase hadir = jumlah hadir / 16 pertemuan x 100
+    return hasil[0] / MAKS_PERTEMUAN * 100
 
 
 def cari_nama(users, nim):
@@ -121,10 +119,10 @@ def view_presensi(data, user):
     # Menampilkan rekap presensi mahasiswa untuk setiap matkul
     print("\nNama :", user["nama"])
     print("NIM  :", user["nim"])
-    print("-" * 85)
-    print("Matkul".ljust(20), "Kode".ljust(7), "Persen".ljust(8),
+    print("-" * 95)
+    print("Matkul".ljust(20), "Kode".ljust(7), "Persen".ljust(8), "Tercatat".ljust(10),
           "Hadir".ljust(7), "Sakit".ljust(7), "Izin".ljust(7), "Alpha")
-    print("-" * 85)
+    print("-" * 95)
 
     for m in data["matkul"]:
         presensi_matkul = data["presensi"][m["kode"]]
@@ -132,7 +130,9 @@ def view_presensi(data, user):
             riwayat = presensi_matkul[user["nim"]]
             hasil = hitung_rekursif([riwayat], 0, 0)
             persen = round(hitung_persen(hasil), 1)
+            tercatat = str(len(riwayat)) + "/" + str(MAKS_PERTEMUAN)
             print(m["nama"].ljust(20), m["kode"].ljust(7), (str(persen) + "%").ljust(8),
+                  tercatat.ljust(10),
                   str(hasil[0]).ljust(7), str(hasil[1]).ljust(7),
                   str(hasil[2]).ljust(7), hasil[3])
 
@@ -172,9 +172,9 @@ def view_lap_kehadiran(data, user):
         rekap = selection_sort(rekap, True)
 
         print("\n=== " + m["kode"] + " - " + m["nama"] + " ===")
-        print("Nama".ljust(20), "NIM".ljust(10), "Persentase")
+        print("Nama".ljust(20), "NIM".ljust(12), "Persentase (dari " + str(MAKS_PERTEMUAN) + " pertemuan)")
         for baris in rekap:
-            print(baris[1].ljust(20), baris[2].ljust(10), str(round(baris[0], 1)) + "%")
+            print(baris[1].ljust(20), baris[2].ljust(12), str(round(baris[0], 1)) + "%")
 
 
 def minta_status(label):
@@ -185,25 +185,32 @@ def minta_status(label):
         if status in ["H", "S", "I", "A", "X", ""]:
             return status
         print("Input salah, isi H / S / I / A")
- 
- 
+
+
 def proses_matkul(data, matkul):
     # Input presensi untuk satu matkul
     riwayat = data["presensi"][matkul["kode"]]
- 
+
     # Buat list [nim, nama] lalu urutkan berdasarkan NIM (syarat binary search)
     daftar = []
     for nim in riwayat:
         daftar.append([nim, cari_nama(data["users"], nim)])
     daftar = selection_sort(daftar, False)
- 
+
+    if len(daftar) == 0:
+        print("Belum ada mahasiswa di matkul ini.")
+        return
+
     jumlah = len(riwayat[daftar[0][0]])
-    print("\nPertemuan tercatat:", jumlah)
+    print("\nPertemuan tercatat:", jumlah, "dari", MAKS_PERTEMUAN)
     pilihan = input("Ketik nomor pertemuan, 'n' untuk pertemuan baru, 'x' keluar: ")
- 
+
     if pilihan == "x":
         return
     elif pilihan == "n":
+        if jumlah >= MAKS_PERTEMUAN:
+            print("Pertemuan sudah mencapai batas maksimal (" + str(MAKS_PERTEMUAN) + ").")
+            return
         # tambah 1 kolom baru di array 2D (default Alpha)
         for nim in riwayat:
             riwayat[nim].append("A")
@@ -215,7 +222,7 @@ def proses_matkul(data, matkul):
     else:
         print("Pertemuan tidak valid")
         return
- 
+
     # TAHAP 1: isi status semua mahasiswa secara berurutan (tanpa pilih / ketik NIM)
     print("\nPertemuan ke-" + str(idx + 1) + ": isi status mahasiswa satu per satu")
     for i in range(len(daftar)):
@@ -228,7 +235,7 @@ def proses_matkul(data, matkul):
         elif status != "":
             riwayat[nim][idx] = status
     simpan_data(data)
- 
+
     # TAHAP 2 (opsional): koreksi mahasiswa tertentu
     while True:
         print("\nPertemuan ke-" + str(idx + 1))
@@ -237,15 +244,15 @@ def proses_matkul(data, matkul):
             nama = daftar[i][1]
             print(str(i + 1) + ". " + nama + " - " + nim + " : [" + riwayat[nim][idx] + "]")
         print("x. keluar")
- 
+
         pilihan = input("Koreksi? Ketik NIM atau nomor urut (x = selesai): ")
         if pilihan == "x":
             return
- 
+
         posisi = binary_search(daftar, pilihan)  # cari NIM dengan binary search
         if posisi == -1 and pilihan.isdigit() and 1 <= int(pilihan) <= len(daftar):
             posisi = int(pilihan) - 1            # kalau bukan NIM, anggap nomor urut
- 
+
         if posisi == -1:
             print("Mahasiswa tidak ditemukan")
         else:
